@@ -4,4 +4,4 @@
  Cidr: 172.20.0.0/16
 
  pubsub1Cidr: 172.20.1.0/24
- az: zone1
+ zone1: ap-south-1a
