@@ -164,5 +164,6 @@
         threads_per_core: 1
         image_id: ami-123456
         instance_type: t2.micro
+        key_name:  "prod-ssh-key"
 
 
