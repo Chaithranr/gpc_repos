@@ -1,0 +1,11 @@
+- name: create ec2 instance
+  ec2:
+    key_name: kgf-key
+    region: "{{region}}"
+    instance_type: t2.micro
+    image: ami-0bcf5425cdc1d8a85
+    wait: yes
+    security_group: default
+    count: 1
+    vpc_subnet_id: "{{pubsub1_out.subnet.id}}"
+    assign_public_ip: yes
