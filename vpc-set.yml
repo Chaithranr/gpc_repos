@@ -149,3 +149,20 @@
             gateway_id: "{{natgw_out.nat_gateway_id}}"
       register: priRT_out
 
+    - name : create ec2 instance
+      amazon.aws.ec2_instance:
+        region: "{{region}}"
+        state: "{{state}}"
+        vpc_subnet_id: "{{pubsub1_out.subnet.id}}"
+        tenancy: default
+        network:
+          assign_public_ip: true
+          security_group: default
+        ebs_optimized: true
+        availability_zone: "{{zone1}}"
+        core_count: 1
+        threads_per_core: 1
+        image_id: ami-123456
+        instance_type: t2.micro
+
+
