@@ -1,0 +1,4 @@
+ vpc_name: bms-vpc
+ region: ap-south-1
+ state: present
+ Cidr: 172.20.0.0/16
