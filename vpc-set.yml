@@ -156,7 +156,7 @@
         vpc_subnet_id: "{{pubsub1_out.subnet.id}}"
         tenancy: default
         network:
-          assign_public_ip: false
+          assign_public_ip: true
           security_group: default
         ebs_optimized: true
         availability_zone: "{{zone1}}"
