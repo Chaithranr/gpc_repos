@@ -5,3 +5,10 @@
 
  pubsub1Cidr: 172.20.1.0/24
  zone1: ap-south-1a
+ zone2: ap-south-1b
+ zone3: ap-south-1c
+ pubsub2Cidr: 172.20.2.0/24
+ pubsub2Cidr: 172.20.3.0/24
+ prisub1Cidr: 172.20.4.0/24
+ prisub2Cidr: 172.20.5.0/24
+ prisub3Cidr: 172.20.6.0/24

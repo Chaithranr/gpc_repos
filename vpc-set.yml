@@ -30,5 +30,122 @@
           Name: pubsub1
       register: pubsub1_out
 
+    - name: create publlic subnet2
+      ec2_vpc_subnet:
+        vpc_id: "{{vpc_out.vpc.id}}"
+        region: "{{region}}"
+        az: "{{zone2}}"
+        cidr: "{{pubsub2Cidr}}"
+        map_public: yes
+        state: "{{state}}"
+        wait: yes
+        tags:
+          Name: pubsub2
+      register: pubsub2_out
 
+
+    - name: create publlic subnet3
+      ec2_vpc_subnet:
+        vpc_id: "{{vpc_out.vpc.id}}"
+        region: "{{region}}"
+        az: "{{zone3}}"
+        cidr: "{{pubsub3Cidr}}"
+        map_public: yes
+        state: "{{state}}"
+        wait: yes
+        tags:
+          Name: pubsub3
+      register: pubsub3_out
+
+    - name: create pprivate subnet1
+      ec2_vpc_subnet:
+        vpc_id: "{{vpc_out.vpc.id}}"
+        region: "{{region}}"
+        az: "{{zone1}}"
+        cidr: "{{prisub1Cidr}}"
+        map_public: yes
+        state: "{{state}}"
+        wait: yes
+        tags:
+          Name: prisub1
+      register: prisub1_out
+
+    - name: create pprivate subnet2
+      ec2_vpc_subnet:
+       vpc_id: "{{vpc_out.vpc.id}}"
+       region: "{{region}}"
+       az: "{{zone2}}"
+       cidr: "{{prisub2Cidr}}"
+       map_public: yes
+       state: "{{state}}"
+       wait: yes
+       tags:
+         Name: prisub2
+      register: prisub2_out
+
+
+
+    - name: create pprivate subnet3
+      ec2_vpc_subnet:
+        vpc_id: "{{vpc_out.vpc.id}}"
+        region: "{{region}}"
+        az: "{{zone3}}"
+        cidr: "{{prisub3Cidr}}"
+        map_public: yes
+        state: "{{state}}"
+        wait: yes
+        tags:
+          Name: prisub3
+      register: prisub3_out
+
+    - name: create igw
+      ec2_vpc_igw:
+        vpc_id: "{{vpc_out.vpc.id}}"
+        region: "{{region}}"
+        state: "{{state}}"
+        tags:
+          Name: kgf_IWG
+      register: igw_out
+
+    - name: create pubRT
+      ec2_vpc_route_table:
+        vpc_id: "{{vpc_out.vpc.id}}"
+        region: "{{region}}"
+        tags:
+          Name: pubRT
+        state: "{{state}}"
+        subnets:
+          - "{{pubsub1_out.subnet.id}}"
+          - "{{pubsub2_out.subnet.id}}"
+          - "{{pubsub3_out.subnet.id}}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{igw_out.gateway_id}}"
+      register: pubRT_out
+
+    - name: create nat gateway
+      ec2_vpc_nat_gateway:
+        state: "{{state}}"
+        region: "{{region}}"
+        subnet_id: "{{pubsub1_out.subnet.id}}"
+        if_exist_do_not_create: yes
+        wait: yes
+        wait_timeout: 300
+      register: natgw_out
+
+    - name: create priRT
+      ec2_vpc_route_table:
+        vpc_id: "{{vpc_out.vpc.id}}"
+        region: "{{region}}"
+        tags:
+          Name: priRT
+        state: "{{state}}"
+        subnets:
+          - "{{prisub1_out.subnet.id}}"
+          - "{{prisub2_out.subnet.id}}"
+          - "{{prisub3_out.subnet.id}}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{natgw_out.nat_gateway_id}}"
+      register: priRT_out
 
